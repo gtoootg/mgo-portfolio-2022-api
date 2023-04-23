@@ -19,9 +19,9 @@ public class AlbumPostDTO {
     private Number lat;
     @JsonProperty(value="lng")
     private Number lng;
-    @JsonProperty(value="flickrPhotoId")
-    private Integer[] flickrPhotoId;
-    @JsonProperty(value="categories")
-    private Map<String, int[]> categories;
+//    @JsonProperty(value="flickrPhotoId")
+//    private Integer[] flickrPhotoId;
+//    @JsonProperty(value="categories")
+//    private Map<String, int[]> categories;
 
 }
