@@ -15,12 +15,9 @@ public class PhotoAlbumFlickrImage {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id",nullable = false)
     private int id;
-    @Column(name="flickrPhotoId",nullable = false)
+    @Column(name="flickr_photo_id",nullable = false)
     private BigInteger flickrPhotoId;
 
-    @Column(name="postId", nullable = false)
+    @Column(name="post_id", nullable = false)
     private int postId;
-//    @ManyToOne
-//    @JoinColumn(name="postId",nullable = false)
-//    private AlbumPost albumPost;
 }

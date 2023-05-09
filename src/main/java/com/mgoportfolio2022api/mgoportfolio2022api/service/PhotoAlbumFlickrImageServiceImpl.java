@@ -3,6 +3,7 @@ package com.mgoportfolio2022api.mgoportfolio2022api.service;
 
 import com.mgoportfolio2022api.mgoportfolio2022api.dao.PhotoAlbumFlickrImageRepository;
 import com.mgoportfolio2022api.mgoportfolio2022api.model.PhotoAlbumFlickrImage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +13,7 @@ public class PhotoAlbumFlickrImageServiceImpl implements PhotoAlbumFlickrImageSe
 
     private PhotoAlbumFlickrImageRepository photoAlbumFlickrImageRepository;
 
+    @Autowired
     public PhotoAlbumFlickrImageServiceImpl(PhotoAlbumFlickrImageRepository thePhotoAlbumFlickrImageService) {
         photoAlbumFlickrImageRepository = thePhotoAlbumFlickrImageService;
     }
