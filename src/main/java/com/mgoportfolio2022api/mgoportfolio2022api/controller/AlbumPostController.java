@@ -1,6 +1,7 @@
 package com.mgoportfolio2022api.mgoportfolio2022api.controller;
 
 import com.mgoportfolio2022api.mgoportfolio2022api.model.AlbumPost;
+import com.mgoportfolio2022api.mgoportfolio2022api.model.PhotoAlbumFlickrImage;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.AlbumPostService;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.PhotoAlbumFlickrImageService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +20,10 @@ public class AlbumPostController {
     //dummy, can be removed
     private PhotoAlbumFlickrImageService photoAlbumFlickrImageService;
 
-    public AlbumPostController(AlbumPostService theAlbumPostService, PhotoAlbumFlickrImageService thePhotoAlbumFlickrImageService){
+    public AlbumPostController(
+            AlbumPostService theAlbumPostService,
+            PhotoAlbumFlickrImageService thePhotoAlbumFlickrImageService
+    ){
         albumPostService =theAlbumPostService;
         photoAlbumFlickrImageService = thePhotoAlbumFlickrImageService;
     }
@@ -27,8 +31,13 @@ public class AlbumPostController {
 
     @GetMapping("/albumposts")
     public List<AlbumPost> getAlbumPosts(){
-        System.out.println(photoAlbumFlickrImageService.findAll());
+//        System.out.println(photoAlbumFlickrImageService.findAll());
         return albumPostService.findAll();
+    }
+
+    @GetMapping("/flickrImages")
+    public List<PhotoAlbumFlickrImage> getPhotoAlbumFlickrImage(){
+        return photoAlbumFlickrImageService.findAll();
     }
 
 }
