@@ -2,6 +2,8 @@ package com.mgoportfolio2022api.mgoportfolio2022api.service.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Map;
 
 @Data
@@ -16,12 +18,10 @@ public class AlbumPostDTO {
     @JsonProperty(value="country")
     private String country;
     @JsonProperty(value="lat")
-    private Number lat;
+    private BigDecimal lat;
     @JsonProperty(value="lng")
-    private Number lng;
-    @JsonProperty(value="flickrPhotoId")
-    private Integer[] flickrPhotoId;
-    @JsonProperty(value="categories")
-    private Map<String, int[]> categories;
+    private BigDecimal lng;
 
+    @JsonProperty(value="imageIds")
+    private BigInteger[] imageIds;
 }

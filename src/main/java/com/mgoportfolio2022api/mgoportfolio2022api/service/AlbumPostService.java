@@ -1,6 +1,7 @@
 package com.mgoportfolio2022api.mgoportfolio2022api.service;
 
-import com.mgoportfolio2022api.mgoportfolio2022api.model.AlbumPost;
+import com.mgoportfolio2022api.mgoportfolio2022api.model.AlbumPostEntity;
+import com.mgoportfolio2022api.mgoportfolio2022api.service.dto.AlbumPostDTO;
 
 
 import java.util.List;
@@ -8,6 +9,6 @@ import java.util.List;
 
 public interface AlbumPostService {
 
-    List<AlbumPost> findAll();
+    List<AlbumPostDTO> getAlbumPostsWithImageIds();
 
 }
