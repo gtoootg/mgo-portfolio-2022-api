@@ -7,9 +7,9 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name="photoalbum-post")
+@Table(name="album_post")
 @Data
-public class AlbumPost {
+public class AlbumPostEntity {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
