@@ -1,6 +1,5 @@
 package com.mgoportfolio2022api.mgoportfolio2022api.controller;
 
-import com.mgoportfolio2022api.mgoportfolio2022api.model.AlbumImageEntity;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.AlbumPostService;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.dto.AlbumPostDTO;
 import org.springframework.web.bind.annotation.GetMapping;

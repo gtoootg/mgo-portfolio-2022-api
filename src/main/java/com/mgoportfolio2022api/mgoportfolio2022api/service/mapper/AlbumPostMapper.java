@@ -5,26 +5,28 @@ import com.mgoportfolio2022api.mgoportfolio2022api.dao.album.AlbumPostDaoImpl;
 import com.mgoportfolio2022api.mgoportfolio2022api.model.AlbumImageEntity;
 import com.mgoportfolio2022api.mgoportfolio2022api.model.AlbumPostEntity;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.dto.AlbumPostDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 
-
+@Component
+@Service
 public class AlbumPostMapper implements EntityMapper<AlbumPostDTO, AlbumPostEntity> {
 
+    @Autowired
     private AlbumPostDaoImpl albumPostDao;
 
+    @Autowired
     private AlbumImageDaoImpl albumImageDao;
 
-    public List<AlbumPostDTO> toDto(){
-        List<AlbumPostEntity> albumPostEntities = albumPostDao.findAll();
+    @Override
+    public AlbumPostDTO toDto(AlbumPostEntity albumPostEntity){
 
-        List<AlbumPostDTO> dtos = new ArrayList<>();
-
-        for(AlbumPostEntity albumPostEntity:albumPostEntities){
             AlbumPostDTO dto = new AlbumPostDTO();
 
             dto.setId(albumPostEntity.getId());
@@ -44,19 +46,12 @@ public class AlbumPostMapper implements EntityMapper<AlbumPostDTO, AlbumPostEnti
                 }
                 dto.setImageIds(imageIds);
             }
-            dtos.add(dto);
-        }
 
-        return dtos;
+        return dto;
     }
 
     @Override
     public AlbumPostEntity toEntity(AlbumPostDTO dto) {
-        return null;
-    }
-
-    @Override
-    public AlbumPostDTO toDto(AlbumPostEntity entity) {
         return null;
     }
 
