@@ -1,7 +1,7 @@
 package com.mgoportfolio2022api.mgoportfolio2022api.service;
 
-import com.mgoportfolio2022api.mgoportfolio2022api.dao.AlbumImageRepository;
-import com.mgoportfolio2022api.mgoportfolio2022api.dao.AlbumPostRepository;
+import com.mgoportfolio2022api.mgoportfolio2022api.dao.album.AlbumImageDaoImpl;
+import com.mgoportfolio2022api.mgoportfolio2022api.dao.album.AlbumPostDaoImpl;
 import com.mgoportfolio2022api.mgoportfolio2022api.model.AlbumImageEntity;
 import com.mgoportfolio2022api.mgoportfolio2022api.model.AlbumPostEntity;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.dto.AlbumPostDTO;
@@ -17,13 +17,15 @@ import java.util.Optional;
 public class AlbumPostServiceImpl implements AlbumPostService {
 
     @Autowired
-    private AlbumPostRepository albumPostRepository;
+    private AlbumPostDaoImpl albumPostDao;
 
     @Autowired
-    private AlbumImageRepository albumImageRepository;
+    private AlbumImageDaoImpl albumImageDao;
+
+
 
     public List<AlbumPostDTO> getAlbumPostsWithImageIds() {
-        List<AlbumPostEntity> albumPostEntities = albumPostRepository.findAll();
+        List<AlbumPostEntity> albumPostEntities = albumPostDao.findAll();
 
         List<AlbumPostDTO> albumPostDTOs = new ArrayList<>();
 
@@ -37,7 +39,7 @@ public class AlbumPostServiceImpl implements AlbumPostService {
             albumPostDTO.setLat(albumPostEntity.getLat());
             albumPostDTO.setLng(albumPostEntity.getLng());
 
-            Optional<List<AlbumImageEntity>> albumImageEntitiesOptional = albumImageRepository.findByPostId(albumPostEntity.getId());
+            Optional<List<AlbumImageEntity>> albumImageEntitiesOptional = albumImageDao.findByPostId(albumPostEntity.getId());
 
             if (albumImageEntitiesOptional.isPresent()) {
                 List<AlbumImageEntity> albumImageEntities = albumImageEntitiesOptional.get();
