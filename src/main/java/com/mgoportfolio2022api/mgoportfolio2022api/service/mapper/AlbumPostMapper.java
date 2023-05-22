@@ -6,7 +6,6 @@ import com.mgoportfolio2022api.mgoportfolio2022api.model.AlbumImageEntity;
 import com.mgoportfolio2022api.mgoportfolio2022api.model.AlbumPostEntity;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.dto.AlbumPostDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
@@ -14,7 +13,6 @@ import java.util.List;
 import java.util.Optional;
 
 
-@Component
 @Service
 public class AlbumPostMapper implements EntityMapper<AlbumPostDTO, AlbumPostEntity> {
 
@@ -28,6 +26,7 @@ public class AlbumPostMapper implements EntityMapper<AlbumPostDTO, AlbumPostEnti
     public AlbumPostDTO toDto(AlbumPostEntity albumPostEntity){
 
             AlbumPostDTO dto = new AlbumPostDTO();
+            Optional<List<AlbumImageEntity>> albumImageEntitiesOptional = albumImageDao.findByPostId(albumPostEntity.getId());
 
             dto.setId(albumPostEntity.getId());
             dto.setTitle(albumPostEntity.getTitle());
@@ -36,7 +35,7 @@ public class AlbumPostMapper implements EntityMapper<AlbumPostDTO, AlbumPostEnti
             dto.setLat(albumPostEntity.getLat());
             dto.setLng(albumPostEntity.getLng());
 
-            Optional<List<AlbumImageEntity>> albumImageEntitiesOptional = albumImageDao.findByPostId(albumPostEntity.getId());
+
 
             if(albumImageEntitiesOptional.isPresent()){
                 List<AlbumImageEntity> albumImageEntities = albumImageEntitiesOptional.get();

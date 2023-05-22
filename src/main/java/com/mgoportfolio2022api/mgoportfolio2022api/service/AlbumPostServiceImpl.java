@@ -20,6 +20,7 @@ public class AlbumPostServiceImpl implements AlbumPostService {
     @Autowired
     private AlbumImageDaoImpl albumImageDao;
 
+    @Autowired
     private AlbumPostMapper albumPostMapper;
 
     @Override
