@@ -11,13 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
+
 public class AlbumPostMapper implements EntityMapper<AlbumPostDTO, AlbumPostEntity> {
 
     private AlbumPostDaoImpl albumPostDao;
 
     private AlbumImageDaoImpl albumImageDao;
 
-    List<AlbumPostDTO> toDto(){
+    public List<AlbumPostDTO> toDto(){
         List<AlbumPostEntity> albumPostEntities = albumPostDao.findAll();
 
         List<AlbumPostDTO> dtos = new ArrayList<>();
