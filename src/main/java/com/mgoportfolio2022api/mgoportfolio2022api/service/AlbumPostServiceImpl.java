@@ -35,4 +35,12 @@ public class AlbumPostServiceImpl implements AlbumPostService {
         }
         return albumPostDtos;
     }
+
+
+
+    @Override
+    public AlbumPostEntity createAlbumPost(AlbumPostDTO albumPostDto) {
+        return albumPostDao.save(albumPostMapper.toEntity(albumPostDto));
+    }
+
 }
