@@ -24,4 +24,7 @@ public class AlbumPostDaoImpl implements AlbumPostDaoInterface{
         return albumPostRepository.findById(id);
     }
 
+    @Override
+    public AlbumPostEntity save(AlbumPostEntity albumPostEntity){return albumPostRepository.save(albumPostEntity);}
+
 }

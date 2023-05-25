@@ -12,4 +12,6 @@ public interface AlbumImageDaoInterface {
     public Optional<AlbumImageEntity> findById(int id);
 
     public Optional<List<AlbumImageEntity>> findByPostId(int postId);
+
+    public List<AlbumImageEntity> saveAll(List<AlbumImageEntity> albumImageEntities);
 }

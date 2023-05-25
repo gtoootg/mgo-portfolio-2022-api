@@ -1,12 +1,10 @@
 package com.mgoportfolio2022api.mgoportfolio2022api.controller;
 
+import com.mgoportfolio2022api.mgoportfolio2022api.model.AlbumPostEntity;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.AlbumPostService;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.dto.AlbumPostDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,5 +29,8 @@ public class AlbumPostController {
     public List<AlbumPostDTO> getAlbumPosts(){
         return albumPostService.getAlbumPostsWithImageIds();
     }
+
+    @PostMapping("/albumpost")
+    public AlbumPostEntity createAlbumPost(@RequestBody AlbumPostDTO albumPostDTO){return albumPostService.createAlbumPost(albumPostDTO);}
 
 }

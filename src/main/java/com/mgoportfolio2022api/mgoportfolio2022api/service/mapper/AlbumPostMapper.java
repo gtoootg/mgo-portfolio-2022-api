@@ -35,8 +35,6 @@ public class AlbumPostMapper implements EntityMapper<AlbumPostDTO, AlbumPostEnti
             dto.setLat(albumPostEntity.getLat());
             dto.setLng(albumPostEntity.getLng());
 
-
-
             if(albumImageEntitiesOptional.isPresent()){
                 List<AlbumImageEntity> albumImageEntities = albumImageEntitiesOptional.get();
                 BigInteger[] imageIds = new BigInteger[albumImageEntities.size()];
@@ -50,8 +48,16 @@ public class AlbumPostMapper implements EntityMapper<AlbumPostDTO, AlbumPostEnti
     }
 
     @Override
-    public AlbumPostEntity toEntity(AlbumPostDTO dto) {
-        return null;
+    public AlbumPostEntity toEntity(AlbumPostDTO albumPostDTO) {
+        AlbumPostEntity albumPostEntity = new AlbumPostEntity();
+
+        albumPostEntity.setTitle(albumPostDTO.getTitle());
+        albumPostEntity.setDescription(albumPostDTO.getDescription());
+        albumPostEntity.setCountry(albumPostDTO.getCountry());
+        albumPostEntity.setLat(albumPostDTO.getLat());
+        albumPostEntity.setLng(albumPostDTO.getLng());
+
+        return albumPostEntity;
     }
 
     @Override
