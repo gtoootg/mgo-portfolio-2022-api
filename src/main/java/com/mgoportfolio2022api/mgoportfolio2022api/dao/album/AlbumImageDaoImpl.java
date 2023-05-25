@@ -31,4 +31,10 @@ public class AlbumImageDaoImpl implements AlbumImageDaoInterface {
     Optional<List<AlbumImageEntity>> findByPostId(int postId) {
         return albumImageRepository.findByPostId(postId);
     }
+
+    @Override
+    public List<AlbumImageEntity> saveAll(List<AlbumImageEntity> albumImageEntities) {
+
+        return albumImageRepository.saveAll(albumImageEntities);
+    }
 }
