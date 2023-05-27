@@ -1,6 +1,7 @@
 package com.mgoportfolio2022api.mgoportfolio2022api.controller;
 
 import com.mgoportfolio2022api.mgoportfolio2022api.dao.AlbumCategoryRepository;
+import com.mgoportfolio2022api.mgoportfolio2022api.dao.album.AlbumCategoryDaoImpl;
 import com.mgoportfolio2022api.mgoportfolio2022api.model.AlbumCategoryEntity;
 import com.mgoportfolio2022api.mgoportfolio2022api.model.AlbumPostEntity;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.AlbumPostService;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -21,6 +23,9 @@ public class AlbumPostController {
 
     @Autowired
     private AlbumCategoryRepository albumCategoryRepository;
+
+    @Autowired
+    private AlbumCategoryDaoImpl albumCategoryDao;
 
 
     public AlbumPostController(
@@ -38,6 +43,13 @@ public class AlbumPostController {
     @PostMapping("/albumpost")
     public AlbumPostEntity createAlbumPost(@RequestBody AlbumPostDTO albumPostDTO){return albumPostService.createAlbumPost(albumPostDTO);}
 
-    @GetMapping("/category")
+
+    //trial
+    @GetMapping("/categories")
     public List<AlbumCategoryEntity> getAlbumImageCategories(){return albumCategoryRepository.findAll();}
+
+
+    //trial
+    @GetMapping("/category")
+    public Optional<List<AlbumCategoryEntity>> getCategoryByPostId(){return albumCategoryDao.findByPostId(1);}
 }
