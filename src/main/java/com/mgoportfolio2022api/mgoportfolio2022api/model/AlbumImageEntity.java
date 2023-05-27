@@ -1,10 +1,12 @@
 package com.mgoportfolio2022api.mgoportfolio2022api.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigInteger;
+import java.util.List;
 
 @Entity
 @Table(name="album_image")
@@ -12,7 +14,6 @@ import java.math.BigInteger;
 public class AlbumImageEntity {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id",nullable = false)
     private int id;
     @Column(name="image_id",nullable = false)
@@ -20,4 +21,8 @@ public class AlbumImageEntity {
 
     @Column(name="post_id", nullable = false)
     private int postId;
+
+    @OneToMany(mappedBy = "albumImageEntity")
+    @JsonIgnore
+    private List<AlbumCategoryEntity> albumCategoryEntities;
 }

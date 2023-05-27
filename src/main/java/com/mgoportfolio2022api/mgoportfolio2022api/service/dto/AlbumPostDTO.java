@@ -24,4 +24,9 @@ public class AlbumPostDTO {
 
     @JsonProperty(value="imageIds")
     private BigInteger[] imageIds;
+
+    @JsonProperty(value="categoryIds")
+    private Map<Integer, BigInteger[]> categoryIds;
+
+
 }

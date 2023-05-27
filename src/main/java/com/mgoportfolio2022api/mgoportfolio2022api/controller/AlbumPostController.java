@@ -1,5 +1,7 @@
 package com.mgoportfolio2022api.mgoportfolio2022api.controller;
 
+import com.mgoportfolio2022api.mgoportfolio2022api.dao.AlbumCategoryRepository;
+import com.mgoportfolio2022api.mgoportfolio2022api.model.AlbumCategoryEntity;
 import com.mgoportfolio2022api.mgoportfolio2022api.model.AlbumPostEntity;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.AlbumPostService;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.dto.AlbumPostDTO;
@@ -17,6 +19,9 @@ public class AlbumPostController {
     @Autowired
     private AlbumPostService albumPostService;
 
+    @Autowired
+    private AlbumCategoryRepository albumCategoryRepository;
+
 
     public AlbumPostController(
             AlbumPostService theAlbumPostService
@@ -33,4 +38,6 @@ public class AlbumPostController {
     @PostMapping("/albumpost")
     public AlbumPostEntity createAlbumPost(@RequestBody AlbumPostDTO albumPostDTO){return albumPostService.createAlbumPost(albumPostDTO);}
 
+    @GetMapping("/category")
+    public List<AlbumCategoryEntity> getAlbumImageCategories(){return albumCategoryRepository.findAll();}
 }
