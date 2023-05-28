@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController
@@ -52,5 +51,5 @@ public class AlbumPostController {
 
     //trial
     @GetMapping("/category")
-    public List<AlbumCategoryEntity> getCategoryByPostId(){return albumCategoryDao.findByPostId(2);}
+    public List<AlbumCategoryEntity> getCategoryByPostId(){return albumCategoryDao.findByPostId(1);}
 }

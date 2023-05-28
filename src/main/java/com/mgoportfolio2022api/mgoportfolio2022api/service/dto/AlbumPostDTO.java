@@ -3,7 +3,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -26,7 +26,7 @@ public class AlbumPostDTO {
     private long[] imageIds;
 
     @JsonProperty(value="categoryIds")
-    private Map<Integer, BigInteger[]> categoryIds;
+    private Map<Integer, List<Long>> categoryIds;
 
 
 }

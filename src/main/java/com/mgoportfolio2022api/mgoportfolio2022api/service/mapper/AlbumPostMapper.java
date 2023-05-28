@@ -10,9 +10,7 @@ import com.mgoportfolio2022api.mgoportfolio2022api.service.dto.AlbumPostDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigInteger;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class AlbumPostMapper implements EntityMapper<AlbumPostDTO, AlbumPostEntity> {
@@ -30,8 +28,10 @@ public class AlbumPostMapper implements EntityMapper<AlbumPostDTO, AlbumPostEnti
     public AlbumPostDTO toDto(AlbumPostEntity albumPostEntity){
 
             AlbumPostDTO dto = new AlbumPostDTO();
-            Optional<List<AlbumImageEntity>> albumImageEntitiesOptional = albumImageDao.findByPostId(albumPostEntity.getId());
-            List<AlbumCategoryEntity> albumCategoryEntitiesOptional = albumCategoryDao.findByPostId(albumPostEntity.getId());
+            int postId = albumPostEntity.getId();
+            Optional<List<AlbumImageEntity>> albumImageEntitiesOptional = albumImageDao.findByPostId(postId);
+
+            List<AlbumCategoryEntity> albumCategoryEntities = albumCategoryDao.findByPostId(1);
 
             dto.setId(albumPostEntity.getId());
             dto.setTitle(albumPostEntity.getTitle());
@@ -40,6 +40,8 @@ public class AlbumPostMapper implements EntityMapper<AlbumPostDTO, AlbumPostEnti
             dto.setLat(albumPostEntity.getLat());
             dto.setLng(albumPostEntity.getLng());
 
+
+            //mapping of albumImageIds
             if(albumImageEntitiesOptional.isPresent()){
                 List<AlbumImageEntity> albumImageEntities = albumImageEntitiesOptional.get();
                 long[] imageIds = new long[albumImageEntities.size()];
@@ -48,6 +50,26 @@ public class AlbumPostMapper implements EntityMapper<AlbumPostDTO, AlbumPostEnti
                 }
                 dto.setImageIds(imageIds);
             }
+
+
+            //mapping of category
+            Map<Integer, List<Long>> imageIdsOfEachCategory = new HashMap<>();
+
+            for(AlbumCategoryEntity albumCategoryEntity:albumCategoryEntities){
+               int categoryId = albumCategoryEntity.getCategoryId();
+               long imageId = albumCategoryEntity.getAlbumImageEntity().getImageId();
+               List<Long> imageIdsOfTheCategory = imageIdsOfEachCategory.get(categoryId);
+               if(imageIdsOfTheCategory != null){
+                   imageIdsOfTheCategory.add(imageId);
+                   imageIdsOfEachCategory.put(categoryId,imageIdsOfTheCategory);
+                   continue;
+               }
+                imageIdsOfTheCategory = new ArrayList<>();
+                imageIdsOfTheCategory.add(imageId);
+               imageIdsOfEachCategory.put(categoryId, imageIdsOfTheCategory);
+            }
+
+            dto.setCategoryIds(imageIdsOfEachCategory);
 
         return dto;
     }
