@@ -1,17 +1,16 @@
 package com.mgoportfolio2022api.mgoportfolio2022api.service.mapper;
 
+import com.mgoportfolio2022api.mgoportfolio2022api.dao.album.AlbumCategoryDaoImpl;
 import com.mgoportfolio2022api.mgoportfolio2022api.dao.album.AlbumImageDaoImpl;
 import com.mgoportfolio2022api.mgoportfolio2022api.dao.album.AlbumPostDaoImpl;
+import com.mgoportfolio2022api.mgoportfolio2022api.model.AlbumCategoryEntity;
 import com.mgoportfolio2022api.mgoportfolio2022api.model.AlbumImageEntity;
 import com.mgoportfolio2022api.mgoportfolio2022api.model.AlbumPostEntity;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.dto.AlbumPostDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigInteger;
-import java.util.List;
-import java.util.Optional;
-
+import java.util.*;
 
 @Service
 public class AlbumPostMapper implements EntityMapper<AlbumPostDTO, AlbumPostEntity> {
@@ -22,11 +21,17 @@ public class AlbumPostMapper implements EntityMapper<AlbumPostDTO, AlbumPostEnti
     @Autowired
     private AlbumImageDaoImpl albumImageDao;
 
+    @Autowired
+    private AlbumCategoryDaoImpl albumCategoryDao;
+
     @Override
     public AlbumPostDTO toDto(AlbumPostEntity albumPostEntity){
 
             AlbumPostDTO dto = new AlbumPostDTO();
-            Optional<List<AlbumImageEntity>> albumImageEntitiesOptional = albumImageDao.findByPostId(albumPostEntity.getId());
+            int postId = albumPostEntity.getId();
+            Optional<List<AlbumImageEntity>> albumImageEntitiesOptional = albumImageDao.findByPostId(postId);
+
+            List<AlbumCategoryEntity> albumCategoryEntities = albumCategoryDao.findByPostId(1);
 
             dto.setId(albumPostEntity.getId());
             dto.setTitle(albumPostEntity.getTitle());
@@ -35,14 +40,36 @@ public class AlbumPostMapper implements EntityMapper<AlbumPostDTO, AlbumPostEnti
             dto.setLat(albumPostEntity.getLat());
             dto.setLng(albumPostEntity.getLng());
 
+
+            //mapping of albumImageIds
             if(albumImageEntitiesOptional.isPresent()){
                 List<AlbumImageEntity> albumImageEntities = albumImageEntitiesOptional.get();
-                BigInteger[] imageIds = new BigInteger[albumImageEntities.size()];
+                long[] imageIds = new long[albumImageEntities.size()];
                 for(int i=0; i<albumImageEntities.size(); i++){
                     imageIds[i] = albumImageEntities.get(i).getImageId();
                 }
                 dto.setImageIds(imageIds);
             }
+
+
+            //mapping of category
+            Map<Integer, List<Long>> imageIdsOfEachCategory = new HashMap<>();
+
+            for(AlbumCategoryEntity albumCategoryEntity:albumCategoryEntities){
+               int categoryId = albumCategoryEntity.getCategoryId();
+               long imageId = albumCategoryEntity.getAlbumImageEntity().getImageId();
+               List<Long> imageIdsOfTheCategory = imageIdsOfEachCategory.get(categoryId);
+               if(imageIdsOfTheCategory != null){
+                   imageIdsOfTheCategory.add(imageId);
+                   imageIdsOfEachCategory.put(categoryId,imageIdsOfTheCategory);
+                   continue;
+               }
+                imageIdsOfTheCategory = new ArrayList<>();
+                imageIdsOfTheCategory.add(imageId);
+               imageIdsOfEachCategory.put(categoryId, imageIdsOfTheCategory);
+            }
+
+            dto.setCategoryIds(imageIdsOfEachCategory);
 
         return dto;
     }

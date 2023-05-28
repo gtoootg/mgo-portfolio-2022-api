@@ -10,7 +10,6 @@ import com.mgoportfolio2022api.mgoportfolio2022api.service.mapper.AlbumPostMappe
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +45,7 @@ public class AlbumPostServiceImpl implements AlbumPostService {
     public AlbumPostEntity createAlbumPost(AlbumPostDTO albumPostDto) {
         AlbumPostEntity savedAlbumPost = albumPostDao.save(albumPostMapper.toEntity(albumPostDto));
 
-        BigInteger[] imageIds = albumPostDto.getImageIds();
+        long[] imageIds = albumPostDto.getImageIds();
         int postId=savedAlbumPost.getId();
 
         List<AlbumImageEntity> albumPostEntities = albumImageMapper.toEntity(imageIds,postId);
