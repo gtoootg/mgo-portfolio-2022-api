@@ -11,10 +11,10 @@ import java.util.List;
 public class AlbumImageMapperImpl implements  AlbumImageMapperInterface{
 
     @Override
-    public List<AlbumImageEntity> toEntity(BigInteger[] imageIds, int postId){
+    public List<AlbumImageEntity> toEntity(long[] imageIds, int postId){
         List<AlbumImageEntity> albumImageEntities = new ArrayList<>();
 
-        for(BigInteger imageId:imageIds){
+        for(long imageId:imageIds){
             AlbumImageEntity newAlbumImageEntity = new AlbumImageEntity();
             newAlbumImageEntity.setImageId(imageId);
             newAlbumImageEntity.setPostId(postId);

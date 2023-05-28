@@ -1,7 +1,9 @@
 package com.mgoportfolio2022api.mgoportfolio2022api.service.mapper;
 
+import com.mgoportfolio2022api.mgoportfolio2022api.dao.album.AlbumCategoryDaoImpl;
 import com.mgoportfolio2022api.mgoportfolio2022api.dao.album.AlbumImageDaoImpl;
 import com.mgoportfolio2022api.mgoportfolio2022api.dao.album.AlbumPostDaoImpl;
+import com.mgoportfolio2022api.mgoportfolio2022api.model.AlbumCategoryEntity;
 import com.mgoportfolio2022api.mgoportfolio2022api.model.AlbumImageEntity;
 import com.mgoportfolio2022api.mgoportfolio2022api.model.AlbumPostEntity;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.dto.AlbumPostDTO;
@@ -21,11 +23,15 @@ public class AlbumPostMapper implements EntityMapper<AlbumPostDTO, AlbumPostEnti
     @Autowired
     private AlbumImageDaoImpl albumImageDao;
 
+    @Autowired
+    private AlbumCategoryDaoImpl albumCategoryDao;
+
     @Override
     public AlbumPostDTO toDto(AlbumPostEntity albumPostEntity){
 
             AlbumPostDTO dto = new AlbumPostDTO();
             Optional<List<AlbumImageEntity>> albumImageEntitiesOptional = albumImageDao.findByPostId(albumPostEntity.getId());
+            List<AlbumCategoryEntity> albumCategoryEntitiesOptional = albumCategoryDao.findByPostId(albumPostEntity.getId());
 
             dto.setId(albumPostEntity.getId());
             dto.setTitle(albumPostEntity.getTitle());
@@ -36,7 +42,7 @@ public class AlbumPostMapper implements EntityMapper<AlbumPostDTO, AlbumPostEnti
 
             if(albumImageEntitiesOptional.isPresent()){
                 List<AlbumImageEntity> albumImageEntities = albumImageEntitiesOptional.get();
-                BigInteger[] imageIds = new BigInteger[albumImageEntities.size()];
+                long[] imageIds = new long[albumImageEntities.size()];
                 for(int i=0; i<albumImageEntities.size(); i++){
                     imageIds[i] = albumImageEntities.get(i).getImageId();
                 }

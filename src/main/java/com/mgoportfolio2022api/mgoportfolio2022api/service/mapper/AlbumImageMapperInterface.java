@@ -6,5 +6,5 @@ import java.math.BigInteger;
 import java.util.List;
 
 public interface AlbumImageMapperInterface {
-    public List<AlbumImageEntity> toEntity(BigInteger[] imageIds, int postId);
+    public List<AlbumImageEntity> toEntity(long[] imageIds, int postId);
 }

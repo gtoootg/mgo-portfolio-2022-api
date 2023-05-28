@@ -23,7 +23,7 @@ public class AlbumPostDTO {
     private BigDecimal lng;
 
     @JsonProperty(value="imageIds")
-    private BigInteger[] imageIds;
+    private long[] imageIds;
 
     @JsonProperty(value="categoryIds")
     private Map<Integer, BigInteger[]> categoryIds;

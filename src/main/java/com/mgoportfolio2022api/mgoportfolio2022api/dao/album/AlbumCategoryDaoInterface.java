@@ -11,6 +11,6 @@ public interface AlbumCategoryDaoInterface {
 
     public Optional<AlbumCategoryEntity> findById(int id);
 
-    public Optional<List<AlbumCategoryEntity>> findByPostId(int postId);
+    public List<AlbumCategoryEntity> findByPostId(int postId);
 
 }

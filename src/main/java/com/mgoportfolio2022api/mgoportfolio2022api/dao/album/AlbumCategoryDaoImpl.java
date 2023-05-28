@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
 @Repository
 public class AlbumCategoryDaoImpl implements  AlbumCategoryDaoInterface{
 
@@ -18,6 +19,8 @@ public class AlbumCategoryDaoImpl implements  AlbumCategoryDaoInterface{
 
     @Override
     public List<AlbumCategoryEntity> findAll() {
+
+
         return albumCategoryRepository.findAll();
     }
 
@@ -27,12 +30,14 @@ public class AlbumCategoryDaoImpl implements  AlbumCategoryDaoInterface{
     }
 
     @Override
-    public Optional<List<AlbumCategoryEntity>> findByPostId(int postId) {
-
+    public List<AlbumCategoryEntity> findByPostId(int postId) {
+        System.out.println( albumCategoryRepository.findAll());
         List<AlbumCategoryEntity> albumCategoryEntities = albumCategoryRepository.findAll();
-        AlbumCategoryEntity[] albumCategoryArray = albumCategoryEntities.toArray(new AlbumCategoryEntity[0]);
-        List<AlbumCategoryEntity> filteredCategories  = Arrays.stream(albumCategoryArray).filter(category -> category.getAlbumImageEntity().getPostId() == postId).collect(Collectors.toList());
+        List<AlbumCategoryEntity> filteredCategories = albumCategoryEntities.stream()
+                .filter(category -> category.getAlbumImageEntity().getPostId() == postId)
+                .collect(Collectors.toList());
 
-        return Optional.ofNullable(filteredCategories);
+        return filteredCategories;
+
     }
 }
