@@ -10,6 +10,7 @@ import com.mgoportfolio2022api.mgoportfolio2022api.service.dto.AlbumPostDTO;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.mapper.AlbumCategoryMapperImpl;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.mapper.AlbumImageMapperImpl;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.mapper.AlbumPostMapper;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
