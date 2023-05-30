@@ -53,11 +53,11 @@ public class AlbumPostMapper implements EntityMapper<AlbumPostDTO, AlbumPostEnti
 
 
             //mapping of category
-            Map<Integer, List<Long>> imageIdsOfEachCategory = new HashMap<>();
+            Map<Long, List<Long>> imageIdsOfEachCategory = new HashMap<>();
 
             for(AlbumCategoryEntity albumCategoryEntity:albumCategoryEntities){
-               int categoryId = albumCategoryEntity.getCategoryId();
-               long imageId = albumCategoryEntity.getAlbumImageEntity().getImageId();
+               long categoryId = albumCategoryEntity.getCategoryId();
+               long imageId = albumCategoryEntity.getSavedAlbumImageEntity().getImageId();
                List<Long> imageIdsOfTheCategory = imageIdsOfEachCategory.get(categoryId);
                if(imageIdsOfTheCategory != null){
                    imageIdsOfTheCategory.add(imageId);

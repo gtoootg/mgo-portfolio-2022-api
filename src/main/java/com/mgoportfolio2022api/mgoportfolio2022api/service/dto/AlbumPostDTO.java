@@ -26,7 +26,7 @@ public class AlbumPostDTO {
     private long[] imageIds;
 
     @JsonProperty(value="categoryIds")
-    private Map<Integer, List<Long>> categoryIds;
+    private Map<Long, List<Long>> categoryIds;
 
 
 }

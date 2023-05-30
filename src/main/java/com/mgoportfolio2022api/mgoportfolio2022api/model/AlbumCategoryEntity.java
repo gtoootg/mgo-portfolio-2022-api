@@ -15,10 +15,10 @@ public class AlbumCategoryEntity {
     private int id;
 
     @Column(name="category_id",nullable = false)
-    private int categoryId;
+    private long categoryId;
 
 
     @ManyToOne
     @JoinColumn(name = "album_image_id")
-    private AlbumImageEntity albumImageEntity;
+    private AlbumImageEntity savedAlbumImageEntity;
 }
