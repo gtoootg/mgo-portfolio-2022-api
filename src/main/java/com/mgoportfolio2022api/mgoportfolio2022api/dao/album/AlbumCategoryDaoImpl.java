@@ -5,7 +5,6 @@ import com.mgoportfolio2022api.mgoportfolio2022api.model.AlbumCategoryEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,10 +33,15 @@ public class AlbumCategoryDaoImpl implements  AlbumCategoryDaoInterface{
         System.out.println( albumCategoryRepository.findAll());
         List<AlbumCategoryEntity> albumCategoryEntities = albumCategoryRepository.findAll();
         List<AlbumCategoryEntity> filteredCategories = albumCategoryEntities.stream()
-                .filter(category -> category.getAlbumImageEntity().getPostId() == postId)
+                .filter(category -> category.getSavedAlbumImageEntity().getPostId() == postId)
                 .collect(Collectors.toList());
 
         return filteredCategories;
 
+    }
+
+    @Override
+    public List<AlbumCategoryEntity> saveAll(List<AlbumCategoryEntity> albumCategoryEntities) {
+        return albumCategoryRepository.saveAll(albumCategoryEntities);
     }
 }

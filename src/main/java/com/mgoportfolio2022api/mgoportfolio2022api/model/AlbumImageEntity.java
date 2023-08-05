@@ -15,6 +15,7 @@ import java.util.List;
 public class AlbumImageEntity {
 
     @Id
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id",nullable = false)
     private int id;
     @Column(name="image_id",nullable = false)
@@ -23,7 +24,7 @@ public class AlbumImageEntity {
     @Column(name="post_id", nullable = false)
     private int postId;
 
-    @OneToMany(mappedBy = "albumImageEntity")
+    @OneToMany(mappedBy = "savedAlbumImageEntity")
     @JsonIgnore
     @ToString.Exclude
     private List<AlbumCategoryEntity> albumCategoryEntities;

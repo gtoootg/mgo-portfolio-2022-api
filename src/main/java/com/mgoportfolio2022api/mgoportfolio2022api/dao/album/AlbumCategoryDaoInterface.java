@@ -13,4 +13,6 @@ public interface AlbumCategoryDaoInterface {
 
     public List<AlbumCategoryEntity> findByPostId(int postId);
 
+    public List<AlbumCategoryEntity> saveAll(List<AlbumCategoryEntity> albumCategoryEntities);
+
 }
