@@ -2,7 +2,11 @@ package com.mgoportfolio2022api.mgoportfolio2022api.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
@@ -11,39 +15,36 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import javax.sql.DataSource;
 
+@EnableWebSecurity
 @Configuration
 public class WebSecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
-        http
-                .authorizeHttpRequests()
-                .requestMatchers(HttpMethod.POST,"http://localhost:3000/api/login").permitAll()
-                .anyRequest().authenticated();
-
-        return http.build();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
-    public UserDetailsManager userDetailsManager(DataSource dataSource){
-
-        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
-
-        jdbcUserDetailsManager.setUsersByUsernameQuery(
-                "select mail, password from user where mail=?"
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(authz -> authz
+                // h2-console を利用する場合は必要
+                // .antMatchers("/h2-console/**").permitAll()
+                .requestMatchers(HttpMethod.POST,"/api/login").permitAll()
+                .anyRequest().authenticated()
         );
+        var authManager = authenticationManager(http.getSharedObject(AuthenticationConfiguration.class));
+        http.addFilter(new UserAuthenticationFilter(authManager));
 
-//        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
-//                "select user_id, role from user_type where user_id=?"
-//        );
+        // セッションを使用しないためステートレスに設定
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.csrf().disable();
 
-        return jdbcUserDetailsManager;
-    }
+        return http.build();
+    };
 
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
+    };
 }

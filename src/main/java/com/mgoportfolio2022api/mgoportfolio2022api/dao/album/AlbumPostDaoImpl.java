@@ -16,9 +16,6 @@ public class AlbumPostDaoImpl implements AlbumPostDaoInterface{
 
     @Override
     public List<AlbumPostEntity> findAll(){
-
-        System.out.println( albumPostRepository.findAll());
-
         return albumPostRepository.findAll();
     }
 
