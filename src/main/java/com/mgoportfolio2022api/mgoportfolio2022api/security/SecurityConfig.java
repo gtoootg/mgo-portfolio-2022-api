@@ -2,6 +2,7 @@ package com.mgoportfolio2022api.mgoportfolio2022api.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,16 +28,21 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+//        http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
         // ログインが必須なページを修正
         http.authorizeRequests(auth -> {
-            auth.requestMatchers("/api/login","POST").permitAll();
-//            auth.antMatchers("/get").permitAll();
-//            auth.antMatchers("/api/login").permitAll();
+
+            auth.anyRequest().permitAll();
+
 //            auth.antMatchers("/post").authenticated();
+//            http.authorizeHttpRequests(authz -> authz
+//                    // h2-console を利用する場合は必要
+//                    // .antMatchers("/h2-console/**").permitAll()
+//                    .requestMatchers(HttpMethod.POST,"/api/login").permitAll()
+//                    .anyRequest().authenticated()
+//            );
         });
         http.cors().configurationSource(corsConfigurationSource());
-        //　作成したFilterを設定
         http.addFilter(new JwtAuthenticationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class))));
         return http.build();
     }
