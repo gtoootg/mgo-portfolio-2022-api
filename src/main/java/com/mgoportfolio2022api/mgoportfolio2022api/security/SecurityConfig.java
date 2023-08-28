@@ -11,24 +11,15 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+
 
 @Configuration
 public class SecurityConfig {
-
-
-    @Bean
-    public InMemoryUserDetailsManager userDetailsManager(){
-        UserDetails user = User.withUsername("misaka")
-                .password(
-                        PasswordEncoderFactories
-                                .createDelegatingPasswordEncoder()
-                                .encode("mikoto"))
-                                .roles("USER")
-                                .build();
-
-        return new InMemoryUserDetailsManager(user);
-    }
-
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
@@ -39,11 +30,41 @@ public class SecurityConfig {
         http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
         // ログインが必須なページを修正
         http.authorizeRequests(auth -> {
-            auth.antMatchers("/api/login").permitAll();
+            auth.requestMatchers("/api/login","POST").permitAll();
+//            auth.antMatchers("/get").permitAll();
+//            auth.antMatchers("/api/login").permitAll();
+//            auth.antMatchers("/post").authenticated();
         });
         http.cors().configurationSource(corsConfigurationSource());
         //　作成したFilterを設定
         http.addFilter(new JwtAuthenticationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class))));
         return http.build();
     }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource(){
+        CorsConfiguration cors = new CorsConfiguration();
+        cors.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        cors.setAllowedMethods(Arrays.asList("GET","POST"));
+        cors.setAllowedHeaders(Arrays.asList("*"));
+        cors.setAllowCredentials(true);
+        cors.addExposedHeader("X-AUTH-TOKEN");
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**",cors);
+        return source;
+    }
+
+    @Bean
+    public InMemoryUserDetailsManager userDetailsManager(){
+        UserDetails user = User.withUsername("misaka")
+                .password(
+                        PasswordEncoderFactories
+                                .createDelegatingPasswordEncoder()
+                                .encode("mikoto"))
+                .roles("USER")
+                .build();
+
+        return new InMemoryUserDetailsManager(user);
+    }
+
 }
