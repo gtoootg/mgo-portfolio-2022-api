@@ -26,21 +26,19 @@ public class SecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
+
+    //https://volkruss.com/posts/p3424/
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-        // ログインが必須なページを修正
+        http.csrf().disable();
+
+//      http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
         http.authorizeRequests(auth -> {
+            auth.requestMatchers("POST","/api/login").permitAll();
+            auth .anyRequest().authenticated();
 
-            auth.anyRequest().permitAll();
 
-//            auth.antMatchers("/post").authenticated();
-//            http.authorizeHttpRequests(authz -> authz
-//                    // h2-console を利用する場合は必要
-//                    // .antMatchers("/h2-console/**").permitAll()
-//                    .requestMatchers(HttpMethod.POST,"/api/login").permitAll()
-//                    .anyRequest().authenticated()
-//            );
+
         });
         http.cors().configurationSource(corsConfigurationSource());
         http.addFilter(new JwtAuthenticationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class))));
