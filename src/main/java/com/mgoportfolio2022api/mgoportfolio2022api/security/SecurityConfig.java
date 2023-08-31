@@ -2,16 +2,15 @@ package com.mgoportfolio2022api.mgoportfolio2022api.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -21,6 +20,14 @@ import java.util.Arrays;
 
 @Configuration
 public class SecurityConfig {
+
+    private final MyUserDetailsService userDetailsService;
+
+    public SecurityConfig(MyUserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
+
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
@@ -36,8 +43,6 @@ public class SecurityConfig {
         http.authorizeRequests(auth -> {
             auth.requestMatchers("POST","/api/login").permitAll();
             auth .anyRequest().authenticated();
-
-
 
         });
         http.cors().configurationSource(corsConfigurationSource());
@@ -58,17 +63,22 @@ public class SecurityConfig {
         return source;
     }
 
-    @Bean
-    public InMemoryUserDetailsManager userDetailsManager(){
-        UserDetails user = User.withUsername("misaka")
-                .password(
-                        PasswordEncoderFactories
-                                .createDelegatingPasswordEncoder()
-                                .encode("mikoto"))
-                .roles("USER")
-                .build();
+//    @Bean
+//    public InMemoryUserDetailsManager userDetailsManager(){
+//        UserDetails user = User.withUsername("misaka")
+//                .password(
+//                        PasswordEncoderFactories
+//                                .createDelegatingPasswordEncoder()
+//                                .encode("mikoto"))
+//                .roles("USER")
+//                .build();
+//
+//        return new InMemoryUserDetailsManager(user);
+//    }
 
-        return new InMemoryUserDetailsManager(user);
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
 }
