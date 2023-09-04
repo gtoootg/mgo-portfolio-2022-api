@@ -1,5 +1,7 @@
 package com.mgoportfolio2022api.mgoportfolio2022api.security;
 
+import com.mgoportfolio2022api.mgoportfolio2022api.dao.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +25,9 @@ public class SecurityConfig {
         this.userDetailsService = userDetailsService;
     }
 
+    @Autowired
+    UserRepository userRepository;
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
@@ -41,7 +46,7 @@ public class SecurityConfig {
 
         });
         http.cors().configurationSource(corsConfigurationSource());
-        http.addFilter(new JwtAuthenticationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class))));
+        http.addFilter(new JwtAuthenticationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)), userRepository));
         return http.build();
     }
 
