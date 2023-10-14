@@ -42,7 +42,7 @@ public class SecurityConfig {
 //      http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
         http.authorizeRequests(auth -> {
             auth.requestMatchers("POST","/api/login").permitAll();
-            auth.anyRequest().authenticated();
+            auth.anyRequest().permitAll();
 
         });
         http.cors().configurationSource(corsConfigurationSource());

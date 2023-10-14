@@ -20,12 +20,6 @@ public class AlbumPostController {
     @Autowired
     private AlbumPostService albumPostService;
 
-    @Autowired
-    private AlbumCategoryRepository albumCategoryRepository;
-
-    @Autowired
-    private AlbumCategoryDaoImpl albumCategoryDao;
-
 
     public AlbumPostController(
             AlbumPostService theAlbumPostService
@@ -42,14 +36,5 @@ public class AlbumPostController {
     @PostMapping("/albumpost")
     public AlbumPostEntity createAlbumPost(@RequestBody AlbumPostDTO albumPostDTO){return albumPostService.createAlbumPost(albumPostDTO);}
 
-    //trial
-    @GetMapping("/categories")
-    public List<AlbumCategoryEntity> getAlbumImageCategories(){
-        System.out.println(albumCategoryRepository.findAll());
-        return albumCategoryRepository.findAll();}
 
-
-    //trial
-    @GetMapping("/category")
-    public List<AlbumCategoryEntity> getCategoryByPostId(){return albumCategoryDao.findByPostId(1);}
 }
