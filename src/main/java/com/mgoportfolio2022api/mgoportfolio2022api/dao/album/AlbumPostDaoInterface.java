@@ -12,4 +12,5 @@ public interface AlbumPostDaoInterface {
     public Optional<AlbumPostEntity> findById(int id);
 
     AlbumPostEntity save(AlbumPostEntity albumPostEntity);
+
 }

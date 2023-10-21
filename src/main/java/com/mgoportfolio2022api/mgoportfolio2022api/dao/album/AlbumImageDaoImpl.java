@@ -15,7 +15,6 @@ public class AlbumImageDaoImpl implements AlbumImageDaoInterface {
     @Autowired
     private AlbumImageRepository albumImageRepository;
 
-
     @Override
     public List<AlbumImageEntity> findAll() {
         return albumImageRepository.findAll();

@@ -7,15 +7,18 @@ import com.mgoportfolio2022api.mgoportfolio2022api.model.AlbumCategoryEntity;
 import com.mgoportfolio2022api.mgoportfolio2022api.model.AlbumImageEntity;
 import com.mgoportfolio2022api.mgoportfolio2022api.model.AlbumPostEntity;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.dto.AlbumPostDTO;
+import com.mgoportfolio2022api.mgoportfolio2022api.service.dto.UpdateAlbumPostDTO;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.mapper.AlbumCategoryMapperImpl;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.mapper.AlbumImageMapperImpl;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.mapper.AlbumPostMapper;
+import com.mgoportfolio2022api.mgoportfolio2022api.service.mapper.UpdateAlbumPostMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AlbumPostServiceImpl implements AlbumPostService {
@@ -34,6 +37,9 @@ public class AlbumPostServiceImpl implements AlbumPostService {
 
     @Autowired
     private AlbumImageMapperImpl albumImageMapper;
+
+    @Autowired
+    private UpdateAlbumPostMapper updateAlbumPostMapper;
 
     @Autowired
     AlbumCategoryMapperImpl albumCategoryMapper;
@@ -69,4 +75,13 @@ public class AlbumPostServiceImpl implements AlbumPostService {
         return savedAlbumPost;
     }
 
+    @Override
+    public AlbumPostEntity updateAlbumPost(UpdateAlbumPostDTO updateAlbumPostDTO){
+
+        AlbumPostEntity albumPostEntityToUpdate = updateAlbumPostMapper.toEntity(updateAlbumPostDTO);
+
+        AlbumPostEntity updatedAlbumPost = albumPostDao.save(albumPostEntityToUpdate);
+
+        return updatedAlbumPost;
+    }
 }

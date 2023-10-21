@@ -31,7 +31,7 @@ public class AlbumPostMapper implements EntityMapper<AlbumPostDTO, AlbumPostEnti
             int postId = albumPostEntity.getId();
             Optional<List<AlbumImageEntity>> albumImageEntitiesOptional = albumImageDao.findByPostId(postId);
 
-            List<AlbumCategoryEntity> albumCategoryEntities = albumCategoryDao.findByPostId(1);
+            List<AlbumCategoryEntity> albumCategoryEntities = albumCategoryDao.findByPostId(postId);
 
             dto.setId(albumPostEntity.getId());
             dto.setTitle(albumPostEntity.getTitle());
