@@ -18,16 +18,19 @@ public class UpdateAlbumPostMapper {
         Optional<AlbumPostEntity> albumPostEntityToUpdateOptional= albumPostDao.findById(albumPostIdToUpdate);
 
         AlbumPostEntity albumPostEntity = new AlbumPostEntity();
-        if(albumPostEntityToUpdateOptional.isPresent()){
-           albumPostEntity = albumPostEntityToUpdateOptional.get();
 
-            if(updateAlbumPostDTO.getTitle()!=null){
-                albumPostEntity.setTitle(updateAlbumPostDTO.getTitle().get());
-            }
-            if(updateAlbumPostDTO.getDescription() !=null) {
-                albumPostEntity.setDescription(updateAlbumPostDTO.getDescription().get());
-            }
+        if(!albumPostEntityToUpdateOptional.isPresent()){
+            return albumPostEntity;
         }
-         return albumPostEntity;
+
+        albumPostEntity = albumPostEntityToUpdateOptional.get();
+        if(updateAlbumPostDTO.getTitle()!=null){
+            albumPostEntity.setTitle(updateAlbumPostDTO.getTitle().get());
+        }
+        if(updateAlbumPostDTO.getDescription() !=null) {
+           albumPostEntity.setDescription(updateAlbumPostDTO.getDescription().get());
+        }
+
+        return albumPostEntity;
     };
 }
