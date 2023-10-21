@@ -21,11 +21,11 @@ public class UpdateAlbumPostMapper {
         if(albumPostEntityToUpdateOptional.isPresent()){
            albumPostEntity = albumPostEntityToUpdateOptional.get();
 
-            if(updateAlbumPostDTO.getTitle().isPresent()){
+            if(updateAlbumPostDTO.getTitle()!=null){
                 albumPostEntity.setTitle(updateAlbumPostDTO.getTitle().get());
             }
-            if(updateAlbumPostDTO.getDescription().isPresent()) {
-                albumPostEntity .setDescription(updateAlbumPostDTO.getDescription().get());
+            if(updateAlbumPostDTO.getDescription() !=null) {
+                albumPostEntity.setDescription(updateAlbumPostDTO.getDescription().get());
             }
         }
          return albumPostEntity;
