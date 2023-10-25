@@ -54,7 +54,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration cors = new CorsConfiguration();
         cors.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
-        cors.setAllowedMethods(Arrays.asList("GET","POST"));
+        cors.setAllowedMethods(Arrays.asList("GET","POST","PUT"));
         cors.setAllowedHeaders(Arrays.asList("*"));
         cors.setAllowCredentials(true);
         cors.addExposedHeader("X-AUTH-TOKEN");

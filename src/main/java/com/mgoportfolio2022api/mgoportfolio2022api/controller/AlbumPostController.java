@@ -1,5 +1,6 @@
 package com.mgoportfolio2022api.mgoportfolio2022api.controller;
 
+import com.mgoportfolio2022api.mgoportfolio2022api.error.AlbumPostNotFoundException;
 import com.mgoportfolio2022api.mgoportfolio2022api.model.AlbumPostEntity;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.AlbumPostService;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.dto.AlbumPostDTO;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -33,6 +35,19 @@ public class AlbumPostController {
     public AlbumPostEntity createAlbumPost(@RequestBody AlbumPostDTO albumPostDTO){return albumPostService.createAlbumPost(albumPostDTO);}
 
     @PutMapping("/albumpost")
-    public AlbumPostEntity updateAlbumPost(@RequestBody UpdateAlbumPostDTO updateAlbumPostDTO ){return albumPostService.updateAlbumPost(updateAlbumPostDTO);}
+    public AlbumPostEntity updateAlbumPost(@RequestBody UpdateAlbumPostDTO updateAlbumPostDTO ){
+
+        Optional<String> description = updateAlbumPostDTO.getDescription();
+
+        if(description.isPresent() ){
+            throw new AlbumPostNotFoundException("description too long");
+        }
+
+
+
+        return albumPostService.updateAlbumPost(updateAlbumPostDTO)
+
+
+    ;}
 
 }
