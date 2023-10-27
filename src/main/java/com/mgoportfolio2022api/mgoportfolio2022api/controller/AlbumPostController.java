@@ -1,11 +1,14 @@
 package com.mgoportfolio2022api.mgoportfolio2022api.controller;
 
 import com.mgoportfolio2022api.mgoportfolio2022api.error.AlbumPostNotFoundException;
+import com.mgoportfolio2022api.mgoportfolio2022api.error.AlumPostErrorResponse;
 import com.mgoportfolio2022api.mgoportfolio2022api.model.AlbumPostEntity;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.AlbumPostService;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.dto.AlbumPostDTO;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.dto.UpdateAlbumPostDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,22 +35,37 @@ public class AlbumPostController {
     }
 
     @PostMapping("/albumpost")
-    public AlbumPostEntity createAlbumPost(@RequestBody AlbumPostDTO albumPostDTO){return albumPostService.createAlbumPost(albumPostDTO);}
+    public AlbumPostEntity createAlbumPost(@RequestBody AlbumPostDTO albumPostDTO){
+        String title = albumPostDTO.getTitle();
+        String description = albumPostDTO.getDescription();
+        if( title.length()>=100){
+            throw new AlbumPostNotFoundException("title is too long");
+        }
+
+        if(description.length()>=1000){
+            throw new AlbumPostNotFoundException("description too long");
+        }
+
+        return albumPostService.createAlbumPost(albumPostDTO);}
 
     @PutMapping("/albumpost")
     public AlbumPostEntity updateAlbumPost(@RequestBody UpdateAlbumPostDTO updateAlbumPostDTO ){
 
+        Optional<String> title = updateAlbumPostDTO.getTitle();
         Optional<String> description = updateAlbumPostDTO.getDescription();
 
-        if(description.isPresent() ){
+
+        if(title.isPresent() && title.get().length()>=100){
+            throw new AlbumPostNotFoundException("title is too long");
+        }
+
+        if(description.isPresent() && description.get().length()>=1000){
             throw new AlbumPostNotFoundException("description too long");
         }
 
-
-
         return albumPostService.updateAlbumPost(updateAlbumPostDTO)
 
-
     ;}
+
 
 }
