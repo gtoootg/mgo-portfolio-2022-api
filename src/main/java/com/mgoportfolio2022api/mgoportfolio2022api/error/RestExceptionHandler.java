@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class RestExceptionHandler {
 
-
     @ExceptionHandler
     public ResponseEntity<AlumPostErrorResponse> handleException(Exception exc){
         AlumPostErrorResponse error = new AlumPostErrorResponse();
