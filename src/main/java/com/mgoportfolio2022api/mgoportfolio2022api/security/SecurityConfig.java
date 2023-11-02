@@ -1,72 +1,65 @@
 package com.mgoportfolio2022api.mgoportfolio2022api.security;
 
-import com.mgoportfolio2022api.mgoportfolio2022api.dao.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.Arrays;
-
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 
-    private final MyUserDetailsService userDetailsService;
+  private JWTAuthEntryPoint authEntryPoint;
 
-    public SecurityConfig(MyUserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
+  private CustomUserDetailsService userDetailsService;
 
-    @Autowired
-    UserRepository userRepository;
+  @Autowired
+  public SecurityConfig(CustomUserDetailsService userDetailsService, JWTAuthEntryPoint authEntryPoint){
+    this.userDetailsService=userDetailsService;
+    this.authEntryPoint = authEntryPoint;
+  }
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http)throws Exception{
+         http
+             .csrf().disable()
+             .exceptionHandling()
+             .authenticationEntryPoint(authEntryPoint)
+             .and()
+             .sessionManagement()
+             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+             .and()
+             .authorizeHttpRequests()
+             .requestMatchers("/api/auth/**").permitAll()
+             .anyRequest().authenticated()
+             .and()
+             .httpBasic();
 
+         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
-    //https://volkruss.com/posts/p3424/
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable();
+         return http.build();
+  }
 
-//      http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
-        http.authorizeRequests(auth -> {
-            auth.requestMatchers("POST","/api/login").permitAll();
-            auth.anyRequest().permitAll();
+  @Bean
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    return authenticationConfiguration.getAuthenticationManager();
+  }
 
-        });
-        http.cors().configurationSource(corsConfigurationSource());
-        http.addFilter(new JwtAuthenticationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)), userRepository));
-        return http.build();
-    }
+  @Bean
+  PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource(){
-        CorsConfiguration cors = new CorsConfiguration();
-        cors.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
-        cors.setAllowedMethods(Arrays.asList("GET","POST","PUT"));
-        cors.setAllowedHeaders(Arrays.asList("*"));
-        cors.setAllowCredentials(true);
-        cors.addExposedHeader("X-AUTH-TOKEN");
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**",cors);
-        return source;
-    }
-
-
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
+  @Bean
+  public JWTAuthenticationFilter jwtAuthenticationFilter(){
+    return new JWTAuthenticationFilter();
+  }
 }
