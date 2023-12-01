@@ -5,18 +5,17 @@ import com.mgoportfolio2022api.mgoportfolio2022api.dao.RoleRepository;
 import com.mgoportfolio2022api.mgoportfolio2022api.dao.UserRepository;
 import com.mgoportfolio2022api.mgoportfolio2022api.model.user.Role;
 import com.mgoportfolio2022api.mgoportfolio2022api.model.user.UserEntity;
-import com.mgoportfolio2022api.mgoportfolio2022api.security.JWTGenerator;
-import com.mgoportfolio2022api.mgoportfolio2022api.service.dto.user.AuthResponseDTO;
-import com.mgoportfolio2022api.mgoportfolio2022api.service.dto.user.LoginDTO;
+import com.mgoportfolio2022api.mgoportfolio2022api.security.JwtUtils;
+import com.mgoportfolio2022api.mgoportfolio2022api.security.UserDetailsService;
+import com.mgoportfolio2022api.mgoportfolio2022api.service.dto.user.AuthenticationRequest;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.dto.user.RegisterDTO;
 import java.util.Collections;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,29 +23,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/auth")
-public class AuthController {
+@RequestMapping("/api/v1/auth")
+@RequiredArgsConstructor
+public class AuthenticationController {
+  private final AuthenticationManager authenticationManager;
+  private final UserDetailsService userDetailsService;
+  private final UserRepository userRepository;
+  private final RoleRepository roleRepository;
+  private final PasswordEncoder passwordEncoder;
+  private final JwtUtils jwtUtils;
 
-
-  private AuthenticationManager authenticationManager;
-  private UserRepository userRepository;
-  private RoleRepository roleRepository;
-  private PasswordEncoder passwordEncoder;
-  private JWTGenerator jwtGenerator;
-  @Autowired
-  public AuthController(
-      AuthenticationManager authenticationManager,
-      UserRepository userRepository,
-      RoleRepository roleRepository,
-      PasswordEncoder passwordEncoder,
-      JWTGenerator jwtGenerator
-    )
-  {
-    this.authenticationManager =authenticationManager;
-    this.userRepository=userRepository;
-    this.roleRepository=roleRepository;
-    this.passwordEncoder=passwordEncoder;
-    this.jwtGenerator = jwtGenerator;
+  @PostMapping("/authenticate")
+  public ResponseEntity<String> authenticate(@RequestBody AuthenticationRequest request){
+    authenticationManager.authenticate(
+        new UsernamePasswordAuthenticationToken(request.getUsername(),request.getPassword())
+    );
+    final UserDetails user = userDetailsService.loadUserByUsername(request.getUsername());
+    if(user!=null){
+      return ResponseEntity.ok(jwtUtils.generateToken(user));
+    }
+    return ResponseEntity.status(400).body("some error occured");
   }
 
   @PostMapping("/register")
@@ -65,16 +61,5 @@ public class AuthController {
     userRepository.save(user);
 
     return new ResponseEntity<>("User register success", HttpStatus.OK);
-  }
-
-  @PostMapping("/login")
-  public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginDTO loginDTO){
-    Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getUsername(),loginDTO.getPassword()));
-
-    SecurityContextHolder.getContext().setAuthentication(authentication);
-
-    String token = jwtGenerator.generateToken(authentication);
-
-    return new ResponseEntity<>(new AuthResponseDTO(token), HttpStatus.OK);
   }
 }
