@@ -31,6 +31,7 @@ public class SecurityConfig {
              .authorizeHttpRequests()
              .requestMatchers("/api/auth/**").permitAll()
              .requestMatchers(HttpMethod.GET,"/api/albumposts").permitAll()
+             .requestMatchers(HttpMethod.GET,"/api/common/**").permitAll()
              .anyRequest()
              .authenticated()
              .and()

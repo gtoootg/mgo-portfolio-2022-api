@@ -5,6 +5,7 @@ import com.mgoportfolio2022api.mgoportfolio2022api.model.AlbumPostEntity;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.AlbumPostService;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.dto.AlbumPostDTO;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.dto.UpdateAlbumPostDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,16 +16,12 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins="*")
+@RequiredArgsConstructor
 public class AlbumPostController {
 
     @Autowired
     private AlbumPostService albumPostService;
 
-    public AlbumPostController(
-            AlbumPostService theAlbumPostService
-    ){
-        albumPostService =theAlbumPostService;
-    }
 
     @GetMapping("/albumposts")
     public List<AlbumPostDTO> getAlbumPosts(){
