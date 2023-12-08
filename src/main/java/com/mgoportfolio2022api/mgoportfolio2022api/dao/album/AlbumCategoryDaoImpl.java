@@ -30,7 +30,6 @@ public class AlbumCategoryDaoImpl implements  AlbumCategoryDaoInterface{
 
     @Override
     public List<AlbumCategoryEntity> findByPostId(int postId) {
-        System.out.println( albumCategoryRepository.findAll());
         List<AlbumCategoryEntity> albumCategoryEntities = albumCategoryRepository.findAll();
         List<AlbumCategoryEntity> filteredCategories = albumCategoryEntities.stream()
                 .filter(category -> category.getSavedAlbumImageEntity().getPostId() == postId)
