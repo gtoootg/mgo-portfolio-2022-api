@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@CrossOrigin(origins="*")
 public class AuthenticationController {
   private final AuthenticationManager authenticationManager;
   private final UserDetailsService userDetailsService;
