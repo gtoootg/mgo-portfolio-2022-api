@@ -1,6 +1,7 @@
 package com.mgoportfolio2022api.mgoportfolio2022api.controller;
 
 import com.mgoportfolio2022api.mgoportfolio2022api.dao.UserRepository;
+import com.mgoportfolio2022api.mgoportfolio2022api.error.exeption.NotFoundException;
 import com.mgoportfolio2022api.mgoportfolio2022api.model.user.UserEntity;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.dto.user.GetUserDTO;
 import java.util.Optional;
@@ -23,7 +24,13 @@ public class UserController {
 
     Integer userId = getUserDTO.getUserId();
 
-    return userRepository.findById(userId);
+    Optional<UserEntity> user = userRepository.findById(userId);
+
+    if(!user.isPresent()){
+      throw new NotFoundException("user is not found");
+    }
+
+    return user;
   }
 
 }

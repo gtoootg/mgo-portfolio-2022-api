@@ -13,7 +13,7 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<RestExceptionResponse> handleException(Exception exc){
+    public ResponseEntity<RestExceptionResponse> handleException( BadRequestException exc){
         RestExceptionResponse error = new RestExceptionResponse();
 
         error.setStatus(HttpStatus.BAD_REQUEST.value());
@@ -23,9 +23,9 @@ public class RestExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(NotFoundException.class)
+    @ExceptionHandler(NotFoundException .class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<RestExceptionResponse> handleNotFoundException(NotFoundException e){
+    public ResponseEntity<RestExceptionResponse> handleNotFoundException(NotFoundException   e){
         var error = new RestExceptionResponse();
         error.setStatus(HttpStatus.NOT_FOUND.value());
         error.setMessage(e.getMessage());
