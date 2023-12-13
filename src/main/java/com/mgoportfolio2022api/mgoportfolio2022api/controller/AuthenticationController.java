@@ -3,6 +3,7 @@ package com.mgoportfolio2022api.mgoportfolio2022api.controller;
 
 import com.mgoportfolio2022api.mgoportfolio2022api.dao.RoleRepository;
 import com.mgoportfolio2022api.mgoportfolio2022api.dao.UserRepository;
+import com.mgoportfolio2022api.mgoportfolio2022api.error.BadRequestException;
 import com.mgoportfolio2022api.mgoportfolio2022api.model.user.Role;
 import com.mgoportfolio2022api.mgoportfolio2022api.model.user.UserEntity;
 import com.mgoportfolio2022api.mgoportfolio2022api.security.JwtUtils;
@@ -10,7 +11,6 @@ import com.mgoportfolio2022api.mgoportfolio2022api.security.UserDetailsService;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.dto.user.AuthResponseDTO;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.dto.user.AuthenticationRequest;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.dto.user.RegisterUserDTO;
-import com.mgoportfolio2022api.mgoportfolio2022api.service.dto.user.UserUtils;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -57,12 +57,12 @@ public class AuthenticationController {
 
   @PostMapping("/register")
   public ResponseEntity<AuthResponseDTO>  register(@RequestBody RegisterUserDTO newUserRequest)  {
-//    if(userRepository.existsByUsername(userDto.getUsername())){
-//      throws new ResponseEntity("Username is taken", HttpStatus.BAD_REQUEST);
-//    }
-//    if(userRepository.existsByEmail(userDto.getEmail())){
-//      return new ResponseEntity<>("This email is taken", HttpStatus.BAD_REQUEST);
-//    }
+    if(userRepository.existsByUsername(newUserRequest.getUsername())){
+      throw new BadRequestException("user exists");
+    }
+    if(userRepository.existsByEmail(newUserRequest.getEmail())){
+      throw new BadRequestException("user name is taken");
+    }
     AuthResponseDTO auth = new AuthResponseDTO();
     UserEntity user = new UserEntity();
     user.setUsername(newUserRequest.getUsername());

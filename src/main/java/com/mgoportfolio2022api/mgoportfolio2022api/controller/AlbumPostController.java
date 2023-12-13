@@ -1,6 +1,6 @@
 package com.mgoportfolio2022api.mgoportfolio2022api.controller;
 
-import com.mgoportfolio2022api.mgoportfolio2022api.error.AlbumPostErrorException;
+import com.mgoportfolio2022api.mgoportfolio2022api.error.BadRequestException;
 import com.mgoportfolio2022api.mgoportfolio2022api.model.AlbumPostEntity;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.AlbumPostService;
 import com.mgoportfolio2022api.mgoportfolio2022api.service.dto.AlbumPostDTO;
@@ -15,7 +15,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
-//@CrossOrigin(origins="*")
 @RequiredArgsConstructor
 public class AlbumPostController {
 
@@ -33,11 +32,11 @@ public class AlbumPostController {
         String title = albumPostDTO.getTitle();
         String description = albumPostDTO.getDescription();
         if( title.length()>=100){
-            throw new AlbumPostErrorException("title is too long");
+            throw new BadRequestException("title is too long");
         }
 
         if(description.length()>=1000){
-            throw new AlbumPostErrorException("description too long");
+            throw new BadRequestException("description too long");
         }
 
         return albumPostService.createAlbumPost(albumPostDTO);}
@@ -50,11 +49,11 @@ public class AlbumPostController {
 
 
         if(title.isPresent() && title.get().length()>=100){
-            throw new AlbumPostErrorException("title is too long");
+            throw new BadRequestException("title is too long");
         }
 
         if(description.isPresent() && description.get().length()>=1000){
-            throw new AlbumPostErrorException("description too long");
+            throw new BadRequestException("description too long");
         }
 
         return albumPostService.updateAlbumPost(updateAlbumPostDTO)
