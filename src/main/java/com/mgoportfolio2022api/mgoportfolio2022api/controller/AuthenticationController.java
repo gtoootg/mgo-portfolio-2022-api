@@ -3,7 +3,8 @@ package com.mgoportfolio2022api.mgoportfolio2022api.controller;
 
 import com.mgoportfolio2022api.mgoportfolio2022api.dao.RoleRepository;
 import com.mgoportfolio2022api.mgoportfolio2022api.dao.UserRepository;
-import com.mgoportfolio2022api.mgoportfolio2022api.error.BadRequestException;
+import com.mgoportfolio2022api.mgoportfolio2022api.error.exeption.BadRequestException;
+import com.mgoportfolio2022api.mgoportfolio2022api.error.exeption.NotFoundException;
 import com.mgoportfolio2022api.mgoportfolio2022api.model.user.Role;
 import com.mgoportfolio2022api.mgoportfolio2022api.model.user.UserEntity;
 import com.mgoportfolio2022api.mgoportfolio2022api.security.JwtUtils;
@@ -56,12 +57,13 @@ public class AuthenticationController {
   }
 
   @PostMapping("/register")
-  public ResponseEntity<AuthResponseDTO>  register(@RequestBody RegisterUserDTO newUserRequest)  {
+  public ResponseEntity<AuthResponseDTO>  register(@RequestBody RegisterUserDTO newUserRequest)
+        {
     if(userRepository.existsByUsername(newUserRequest.getUsername())){
       throw new BadRequestException("user exists");
     }
     if(userRepository.existsByEmail(newUserRequest.getEmail())){
-      throw new BadRequestException("user name is taken");
+      throw new  BadRequestException("email is taken");
     }
     AuthResponseDTO auth = new AuthResponseDTO();
     UserEntity user = new UserEntity();

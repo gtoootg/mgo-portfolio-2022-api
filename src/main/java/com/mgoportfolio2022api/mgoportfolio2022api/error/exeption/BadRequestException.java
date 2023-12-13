@@ -1,4 +1,4 @@
-package com.mgoportfolio2022api.mgoportfolio2022api.error;
+package com.mgoportfolio2022api.mgoportfolio2022api.error.exeption;
 
 public class BadRequestException extends RuntimeException{
 

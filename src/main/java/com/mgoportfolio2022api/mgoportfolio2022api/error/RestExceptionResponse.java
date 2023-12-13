@@ -1,6 +1,6 @@
 package com.mgoportfolio2022api.mgoportfolio2022api.error;
 
-public class AlumPostErrorResponse {
+public class RestExceptionResponse {
 
 
     private int status;
@@ -9,13 +9,13 @@ public class AlumPostErrorResponse {
 
     private long timeStamp;
 
-    public AlumPostErrorResponse(int status, String message, long timeStamp) {
+    public RestExceptionResponse(int status, String message, long timeStamp) {
         this.status = status;
         this.message = message;
         this.timeStamp = timeStamp;
     }
 
-    public  AlumPostErrorResponse (){
+    public RestExceptionResponse(){
 
     }
 
