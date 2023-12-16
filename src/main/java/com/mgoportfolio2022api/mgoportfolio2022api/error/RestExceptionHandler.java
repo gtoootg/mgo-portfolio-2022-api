@@ -1,5 +1,6 @@
 package com.mgoportfolio2022api.mgoportfolio2022api.error;
 
+import com.mgoportfolio2022api.mgoportfolio2022api.error.exeption.AuthException;
 import com.mgoportfolio2022api.mgoportfolio2022api.error.exeption.BadRequestException;
 import com.mgoportfolio2022api.mgoportfolio2022api.error.exeption.NotFoundException;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,15 @@ public class RestExceptionHandler {
     public ResponseEntity<RestExceptionResponse> handleNotFoundException(NotFoundException   e){
         var error = new RestExceptionResponse();
         error.setStatus(HttpStatus.NOT_FOUND.value());
+        error.setMessage(e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(AuthException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public  ResponseEntity<RestExceptionResponse> handleAuthException(AuthException e){
+        var error = new RestExceptionResponse();
+        error.setStatus(HttpStatus.UNAUTHORIZED.value());
         error.setMessage(e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }

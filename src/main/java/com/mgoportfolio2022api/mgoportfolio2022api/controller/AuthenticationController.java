@@ -3,8 +3,8 @@ package com.mgoportfolio2022api.mgoportfolio2022api.controller;
 
 import com.mgoportfolio2022api.mgoportfolio2022api.dao.RoleRepository;
 import com.mgoportfolio2022api.mgoportfolio2022api.dao.UserRepository;
+import com.mgoportfolio2022api.mgoportfolio2022api.error.exeption.AuthException;
 import com.mgoportfolio2022api.mgoportfolio2022api.error.exeption.BadRequestException;
-import com.mgoportfolio2022api.mgoportfolio2022api.error.exeption.NotFoundException;
 import com.mgoportfolio2022api.mgoportfolio2022api.model.user.Role;
 import com.mgoportfolio2022api.mgoportfolio2022api.model.user.UserEntity;
 import com.mgoportfolio2022api.mgoportfolio2022api.security.JwtUtils;
@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.ErrorResponseException;
@@ -40,20 +41,21 @@ public class AuthenticationController {
 
   @PostMapping("/login")
   public ResponseEntity<AuthResponseDTO> authenticate(@RequestBody AuthenticationRequest request){
-    AuthResponseDTO response = new AuthResponseDTO();
 
-    authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(request.getUsername(),request.getPassword())
-    );
-    final UserDetails user = userDetailsService.loadUserByUsername(request.getUsername());
-    Integer userId = userRepository.findByUsername(user.getUsername()).get().getId();
+    try{
+      authenticationManager.authenticate(
+          new UsernamePasswordAuthenticationToken(request.getUsername(),request.getPassword())
+      );
+      final UserDetails user = userDetailsService.loadUserByUsername(request.getUsername());
+      Integer userId = userRepository.findByUsername(user.getUsername()).get().getId();
 
-    if(user!=null){
+      AuthResponseDTO response = new AuthResponseDTO();
       response.setAccessToken(jwtUtils.generateToken(user));
       response.setUserId(userId);
       return ResponseEntity.ok(response);
+    } catch (AuthenticationException e) {
+      throw new AuthException("Invalid username or password");
     }
-    throw new ErrorResponseException(HttpStatusCode.valueOf(400));
   }
 
   @PostMapping("/register")

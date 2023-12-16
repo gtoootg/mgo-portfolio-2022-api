@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -20,7 +19,6 @@ public class AlbumPostController {
 
     @Autowired
     private AlbumPostService albumPostService;
-
 
     @GetMapping("/albumposts")
     public List<AlbumPostDTO> getAlbumPosts(){
@@ -31,22 +29,20 @@ public class AlbumPostController {
     public AlbumPostEntity createAlbumPost(@RequestBody AlbumPostDTO albumPostDTO){
         String title = albumPostDTO.getTitle();
         String description = albumPostDTO.getDescription();
-        if( title.length()>=100){
-            throw new BadRequestException("title is too long");
+        if(title.length()>=100){
+           throw new BadRequestException("title is too long");
         }
-
         if(description.length()>=1000){
             throw new BadRequestException("description too long");
         }
-
-        return albumPostService.createAlbumPost(albumPostDTO);}
+        return albumPostService.createAlbumPost(albumPostDTO);
+    }
 
     @PutMapping("/albumpost")
     public AlbumPostEntity updateAlbumPost(@RequestBody UpdateAlbumPostDTO updateAlbumPostDTO ){
 
         Optional<String> title = updateAlbumPostDTO.getTitle();
         Optional<String> description = updateAlbumPostDTO.getDescription();
-
 
         if(title.isPresent() && title.get().length()>=100){
             throw new BadRequestException("title is too long");
