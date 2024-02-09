@@ -37,6 +37,8 @@ public class SecurityConfig {
              .csrf().disable()
              .authorizeHttpRequests()
              .requestMatchers("/api/auth/**").permitAll()
+             .requestMatchers(HttpMethod.GET,"/api").permitAll()
+             .requestMatchers(HttpMethod.GET,"/api/users").permitAll()
              .requestMatchers(HttpMethod.GET,"/api/albumposts").permitAll()
              .requestMatchers(HttpMethod.GET,"/api/common/**").permitAll()
              .anyRequest()
