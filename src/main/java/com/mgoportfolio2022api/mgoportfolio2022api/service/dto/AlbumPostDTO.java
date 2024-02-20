@@ -28,5 +28,6 @@ public class AlbumPostDTO {
     @JsonProperty(value="categoryIds")
     private Map<Long, List<Long>> categoryIds;
 
-
+    @JsonProperty(value="userId")
+    private int userId;
 }

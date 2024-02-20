@@ -39,6 +39,7 @@ public class AlbumPostMapper implements EntityMapper<AlbumPostDTO, AlbumPostEnti
             dto.setCountry(albumPostEntity.getCountry());
             dto.setLat(albumPostEntity.getLat());
             dto.setLng(albumPostEntity.getLng());
+            dto.setUserId(albumPostEntity.getUserId());
 
 
             //mapping of albumImageIds
@@ -83,6 +84,7 @@ public class AlbumPostMapper implements EntityMapper<AlbumPostDTO, AlbumPostEnti
         albumPostEntity.setCountry(albumPostDTO.getCountry());
         albumPostEntity.setLat(albumPostDTO.getLat());
         albumPostEntity.setLng(albumPostDTO.getLng());
+        albumPostEntity.setUserId(albumPostDTO.getUserId());
 
         return albumPostEntity;
     }

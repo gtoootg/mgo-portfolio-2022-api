@@ -30,4 +30,7 @@ public class AlbumPostEntity {
 
     @Column(name="lng",nullable = false )
     private BigDecimal lng;
+
+    @Column(name="user_id", nullable = false)
+    private int userId;
 }
